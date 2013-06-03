@@ -236,14 +236,14 @@
         tp-hand (two-pair hand)
         p-hand (pair hand)
         h-hand (high-card hand)]
-    (cond  (not (nil? sf-hand)) [sf-hand :straight-flush]
-           (not (nil? q-hand)) [q-hand :quads]
-           (not (nil? fh-hand)) [fh-hand :full-house]
-           (not (nil? f-hand)) [f-hand :is-flush]
-           (not (nil? s-hand)) [s-hand :straight]
-           (not (nil? t-hand)) [t-hand :trips]
-           (not (nil? tp-hand)) [tp-hand :two-pair]
-           (not (nil? p-hand)) [p-hand :pair]
+    (cond sf-hand [sf-hand :straight-flush]
+           q-hand [q-hand :quads]
+           fh-hand [fh-hand :full-house]
+           f-hand [f-hand :is-flush]
+           s-hand [s-hand :straight]
+           t-hand [t-hand :trips]
+           tp-hand [tp-hand :two-pair]
+           p-hand [p-hand :pair]
            :else [h-hand :high-card])))
 
 (defn bt-helper [player-strength bot-strength]
