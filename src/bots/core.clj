@@ -19,9 +19,10 @@
 (declare play-game)
 (declare bot-play)
 (declare check)
+(declare format-cards)
 
 ;; game setup
-(def suits ["H" "C" "S" "D"])
+(def suits ["h" "c" "s" "d"])
 (def ranks ["_" "2" "3" "4" "5" "6" "7" "8" "9" "T" "J" "Q" "K" "A"])
 (def players [:bot :human])
 
@@ -408,10 +409,10 @@
         (= street :river)
         (concat @flop @turn @river)
         (= street :showdown)
-        ((println "Player has: " (concat @player-hand @flop @turn @river))
+        ((println "Player has: " (format-cards (concat @player-hand @flop @turn @river)))
          (println)
-         (println "Lizzie's shows: " @bot-hand)
-         (println "Lizzie has: " (concat @bot-hand @flop @turn @river))
+         (println "Lizzie's shows: " (format-cards @bot-hand))
+         (println "Lizzie has: " (format-cards (concat @bot-hand @flop @turn @river)))
          (compare-hand-strength  (concat @player-hand @flop @turn @river) (concat @bot-hand @flop @turn @river))
          (play-game))))
 
@@ -424,9 +425,9 @@
   (println "Pot: " (:pot @game-state))
   (println)
   (println street)
-  (println (get-board street))
+  (println (format-cards (get-board street)))
   (println)
-  (println @player-hand)
+  (println (format-cards @player-hand))
   (println)
   (cond (and (= checks 0)
              (false? facing-bet?))
@@ -441,6 +442,11 @@
              (= total-bets max-bets))
         (call-fold player street)))
 
+(defn format-cards [cards]
+  (map 
+    (fn [c] (apply format "%s%s" c))
+    cards))
+
 (defn play-game []
   (reset-deck)
   (switch-pos)
@@ -451,7 +457,7 @@
   (reset! bot-hand (create-hands))
   (println "Lizzie: " (:bot @game-state))
   (println "You: " (:human @game-state))
-  (println @player-hand "\n")
+  (println (format-cards @player-hand) "\n")
   (post-blinds (:button position))
   (sb-action (:oop position)))
 
