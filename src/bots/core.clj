@@ -441,6 +441,11 @@
              (= total-bets max-bets))
         (call-fold player street)))
 
+(defn format-cards [cards]
+  (map 
+    (fn [c] (apply format "%s%s" c))
+    cards))
+
 (defn play-game []
   (reset-deck)
   (switch-pos)
